@@ -1,6 +1,7 @@
 package br.com.rrmelo.concretedesafio.service;
 
 import br.com.rrmelo.concretedesafio.model.User;
+import br.com.rrmelo.concretedesafio.repository.TokenOnly;
 import br.com.rrmelo.concretedesafio.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,9 @@ public class UserService {
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public Optional<TokenOnly> findToken(UUID token) {
+        return userRepository.findTokenByToken(token);
     }
 }
