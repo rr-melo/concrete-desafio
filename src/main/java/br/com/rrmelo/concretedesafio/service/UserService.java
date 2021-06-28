@@ -12,14 +12,21 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final TokenService tokenService;
+
+    public UserService(UserRepository userRepository, TokenService tokenService) {
+        this.userRepository = userRepository;
+        this.tokenService = tokenService;
+    }
 
     public Optional<User> findById(UUID id) {
         return userRepository.findById(id);
     }
 
     public User save(User user) {
+        String token = tokenService.generateToken(user);
+        user.setToken(token);
         return userRepository.save(user);
     }
 
@@ -27,7 +34,7 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public Optional<TokenOnly> findToken(UUID token) {
+    public Optional<TokenOnly> findToken(String token) {
         return userRepository.findTokenByToken(token);
     }
 }

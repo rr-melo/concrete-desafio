@@ -5,6 +5,7 @@ import br.com.rrmelo.concretedesafio.configuration.validation.exception.Username
 import br.com.rrmelo.concretedesafio.controller.form.LoginForm;
 import br.com.rrmelo.concretedesafio.model.User;
 import br.com.rrmelo.concretedesafio.service.UserService;
+import br.com.rrmelo.concretedesafio.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 public class LoginController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final TokenService tokenService;
+
+    public LoginController(UserService userService, TokenService tokenService) {
+        this.userService = userService;
+        this.tokenService = tokenService;
+    }
 
     @PostMapping(
             value = "login",
@@ -35,7 +40,7 @@ public class LoginController {
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
             if(user.getPassword().equals(loginForm.getPassword())) {
-                user.setToken(UUID.randomUUID());
+                user.setToken(tokenService.generateToken(user));
                 user.setLastLogin(LocalDateTime.now());
                 user.setModified(LocalDateTime.now());
                 return ResponseEntity.ok(user);

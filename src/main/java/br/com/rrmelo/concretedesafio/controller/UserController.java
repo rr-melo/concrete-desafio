@@ -25,20 +25,23 @@ import java.util.UUID;
 @RequestMapping("user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping(
             value = "{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<User> get(@PathVariable @NotNull UUID id,
-                                    @RequestHeader(name = "token", required = false) UUID token) {
+                                    @RequestHeader(name = "token", required = false) String token) {
         if(token == null)
             throw new MissingTokenException();
 
         Optional<TokenOnly> optToken = userService.findToken(token);
-        if (optToken.isPresent() && optToken.get().getToken().equals(token)) {
+        if (optToken.isPresent()) {
             Optional<User> optUser = userService.findById(id);
             if (optUser.isPresent()) {
                 User user = optUser.get();

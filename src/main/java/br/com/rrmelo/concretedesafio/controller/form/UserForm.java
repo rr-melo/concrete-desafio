@@ -3,6 +3,7 @@ package br.com.rrmelo.concretedesafio.controller.form;
 import br.com.rrmelo.concretedesafio.model.Phone;
 import br.com.rrmelo.concretedesafio.model.User;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

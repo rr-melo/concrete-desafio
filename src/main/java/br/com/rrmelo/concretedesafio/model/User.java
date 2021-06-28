@@ -1,6 +1,5 @@
 package br.com.rrmelo.concretedesafio.model;
 
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,7 +20,7 @@ public class User {
     private LocalDateTime created;
     private LocalDateTime modified;
     private LocalDateTime lastLogin;
-    private UUID token;
+    private String token;
 
     public User() { }
 
@@ -33,7 +32,6 @@ public class User {
         this.created = LocalDateTime.now();
         this.modified = LocalDateTime.now();
         this.lastLogin = LocalDateTime.now();
-        this.token = UUID.randomUUID();
     }
 
     public UUID getId() {
@@ -100,11 +98,11 @@ public class User {
         this.lastLogin = last_login;
     }
 
-    public UUID getToken() {
+    public String getToken() {
         return token;
     }
 
-    public void setToken(UUID token) {
+    public void setToken(String token) {
         this.token = token;
     }
 }
