@@ -1,5 +1,6 @@
 package br.com.rrmelo.concretedesafio.controller;
 
+
 import br.com.rrmelo.concretedesafio.configuration.validation.exception.*;
 import br.com.rrmelo.concretedesafio.controller.form.UserForm;
 import br.com.rrmelo.concretedesafio.model.User;
@@ -53,7 +54,7 @@ public class UserController {
 
         throw new InvalidTokenException();
     }
-
+  
     @PostMapping(
             value = "register",
             consumes = MediaType.APPLICATION_JSON_VALUE,
