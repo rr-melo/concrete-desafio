@@ -1,5 +1,7 @@
 package br.com.rrmelo.concretedesafio.controller.form;
 
+import br.com.rrmelo.concretedesafio.util.SecurityUtils;
+
 import javax.validation.constraints.NotNull;
 
 public class LoginForm {
@@ -10,7 +12,7 @@ public class LoginForm {
 
     public LoginForm(String email, String password) {
         this.email = email;
-        this.password = password;
+        this.password = SecurityUtils.encrypt(password);
     }
 
     public String getEmail() {
@@ -26,6 +28,6 @@ public class LoginForm {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = SecurityUtils.encrypt(password);
     }
 }

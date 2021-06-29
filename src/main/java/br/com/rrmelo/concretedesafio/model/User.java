@@ -1,6 +1,8 @@
 package br.com.rrmelo.concretedesafio.model;
 
 
+import br.com.rrmelo.concretedesafio.util.SecurityUtils;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -28,7 +30,7 @@ public class User {
     public User(String name, String email, String password, Set<Phone> phones) {
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.password = SecurityUtils.encrypt(password) ;
         this.phones = phones;
         this.created = LocalDateTime.now();
         this.modified = LocalDateTime.now();
@@ -64,7 +66,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = SecurityUtils.encrypt(password);
     }
 
     public Set<Phone> getPhones() {

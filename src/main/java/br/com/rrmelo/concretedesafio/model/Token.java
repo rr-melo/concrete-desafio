@@ -1,5 +1,7 @@
 package br.com.rrmelo.concretedesafio.model;
 
+import br.com.rrmelo.concretedesafio.util.SecurityUtils;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -33,7 +35,7 @@ public class Token {
     }
 
     public void setValue(String value) {
-        this.value = value;
+        this.value = SecurityUtils.encrypt(value);
     }
 
     public User getUser() {
