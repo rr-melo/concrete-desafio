@@ -52,19 +52,12 @@ Corpo:
 
 Este endpoint deverá ser utilizado para que o usuário, utilizando um e-mail e senha cadastrados, seguindo o formato abaixo:
 
->```json
->   {
->        "name": "João da Silva",
->        "email": "joao@silva.org",
->        "password": "hunter2",
->        "phones": [
->            {
->                "number": "987654321",
->                "ddd": "21"
->            }
->        ]
->    }
->```
+> ```json
+>     {
+>         "email": "joao@silva.org",
+>         "password": "hunter2"
+>     }
+> ```
 
 #### Respostas:
 
