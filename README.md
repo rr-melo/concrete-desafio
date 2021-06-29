@@ -24,7 +24,14 @@ Esse endpoint deverá receber no body um usuário com os campos "nome", "email",
 
 #### Respostas: 
 
-* Código: `HTTP 201 Created`
+* Em caso de sucesso, retorne no body de resposta, o usuário, mais os campos:
+    * `id`: id do usuário (pode ser o próprio gerado pelo banco, porém seria interessante se fosse um UUID)
+    * `created`: data da criação do usuário
+    * `modified`: data da última atualização do usuário
+    * `last_login`: data do último login (no caso da criação, será a mesma data que a  data de criação)
+    * `token`: token de acesso para o endpoint de perfil (pode ser um UUID ou um JWT)
+
+Código: `HTTP 201 Created`
 Corpo:
 
 >```json
@@ -46,7 +53,9 @@ Corpo:
 >     }
 > ```
 
-* Código: `HTTP 409 Conflict`       Mensagem: `E-mail já existente`
+* Caso o e-mail já exista, deverá retornar erro com a mensagem "E-mail já existente".
+
+Código: `HTTP 409 Conflict`       Mensagem: `E-mail já existente`
 
 ### Login: `POST /login`
 
@@ -61,7 +70,9 @@ Este endpoint deverá ser utilizado para que o usuário, utilizando um e-mail e 
 
 #### Respostas:
 
-* Código: `HTTP 200 OK`
+* Caso o e-mail e a senha correspondam a um usuário existente
+
+Código: `HTTP 200 OK`
 Corpo:
 
 >```json
@@ -83,9 +94,13 @@ Corpo:
 >     }
 > ```
 
-* Código: `HTTP 404 Not Found`      Mensagem: `Usuário e/ou senha inválidos`
+* Caso o e-mail não exista, retornar status apropriado e utilizar o formato de mensagem de erro com a mensagem "Usuário e/ou senha inválidos".
 
-* Código: `HTTP 401 Unauthorized`   Mensagem: `Usuário e/ou senha inválidos`
+Código: `HTTP 404 Not Found`      Mensagem: `Usuário e/ou senha inválidos`
+
+* Caso o e-mail exista mas a senha não bata, retornar o status 401 e utilizar o formato de mensagem de erro com a mensagem "Usuário e/ou senha inválidos".
+
+Código: `HTTP 401 Unauthorized`   Mensagem: `Usuário e/ou senha inválidos`
 
 ### Perfil do Usuário: `GET /user/{id}`
 
@@ -96,7 +111,9 @@ Este endpoint deverá receber no header um token (jwt ou uuid), e um id de usuá
 
 #### Respostas:
 
-* Código: `HTTP 200 OK`
+* Caso tudo esteja ok
+
+Código: `HTTP 200 OK`
 Corpo:
 
 >```json
@@ -118,11 +135,19 @@ Corpo:
 >     }
 > `
 
+* Caso o token não seja passado no header, deverá retornar erro com status apropriado e com a mensagem "Não autorizado".
 
-* Código: `HTTP 400 Bad Request`    Mensagem: `Não autorizado`
+Código: `HTTP 400 Bad Request`    Mensagem: `Não autorizado`
 
-* Código: `HTTP 404 Not Found`      Mensagem: `Não autorizado`
+* Caso o token seja diferente do persistido, retornar erro com status apropriado e com a mensagem "Não autorizado".
 
-* Código: `HTTP 404 Not Found`      Mensagem: `Usuário não encontrado`
+Código: `HTTP 404 Not Found`      Mensagem: `Não autorizado`
 
-* Código: `HTTP 410 Gone`           Mensagem: `Sessão inválida`
+* Caso o usuário não seja encontrado pelo id, retornar com status e mensagem de erro apropriados.
+
+Código: `HTTP 404 Not Found`      Mensagem: `Usuário não encontrado`
+
+* Verificar se o último login foi há MENOS de 30 minutos atrás. 
+     * Caso não seja há MENOS de 30 minutos atrás, retornar erro com status apropriado e com a mensagem "Sessão inválida".
+
+Código: `HTTP 410 Gone`           Mensagem: `Sessão inválida`
