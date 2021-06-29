@@ -45,14 +45,14 @@ public class UserService {
             throw new MissingTokenException();
 
         Optional<Token> optToken = tokenRepository.findByValue(token);
-        if (optToken.isPresent() && optToken.get().getUser().getId().equals(id)) return verifyId(id);
+        if (optToken.isPresent()) return verifyId(optToken.get().getUser().getId(), id);
 
         throw new InvalidTokenException();
     }
 
-    private User verifyId(UUID id) {
-        Optional<User> optUser = userRepository.findById(id);
-        if (optUser.isPresent()) return verifySessionTime(optUser.get());
+    private User verifyId(UUID persistedId, UUID receivedId) {
+        Optional<User> optUser = userRepository.findById(receivedId);
+        if (optUser.isPresent() && persistedId.equals(receivedId)) return verifySessionTime(optUser.get());
 
         throw new UserNotFoundException();
     }

@@ -34,7 +34,7 @@ public class UserExceptionHandler {
         return new ExceptionDto(e.getMessage());
     }
 
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ResponseStatus(code = HttpStatus.GONE)
     @ExceptionHandler(InvalidSessionException.class)
     public ExceptionDto handle(InvalidSessionException e) {
         return new ExceptionDto(e.getMessage());
