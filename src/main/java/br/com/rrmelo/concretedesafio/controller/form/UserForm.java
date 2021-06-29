@@ -25,6 +25,13 @@ public class UserForm {
     @NotNull
     private Set<Phone> phones;
 
+    public UserForm(String name, String email, String password, Set<Phone> phones) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phones = phones;
+    }
+
     public String getName() {
         return name;
     }

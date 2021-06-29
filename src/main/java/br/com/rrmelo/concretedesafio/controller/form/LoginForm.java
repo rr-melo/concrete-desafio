@@ -6,6 +6,13 @@ public class LoginForm {
     @NotNull private String email;
     @NotNull private String password;
 
+    public LoginForm() { }
+
+    public LoginForm(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }

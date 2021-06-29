@@ -1,39 +1,22 @@
-package br.com.rrmelo.concretedesafio.model;
+package br.com.rrmelo.concretedesafio.controller.dto;
 
+import br.com.rrmelo.concretedesafio.model.Phone;
+import br.com.rrmelo.concretedesafio.model.User;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity
-@Table(name = "user")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class UserDto {
     private UUID id;
     private String name;
     private String email;
     private String password;
-    @ElementCollection
     private Set<Phone> phones;
     private LocalDateTime created;
     private LocalDateTime modified;
     private LocalDateTime lastLogin;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Token token = new Token(this);
-
-    public User() { }
-
-    public User(String name, String email, String password, Set<Phone> phones) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.phones = phones;
-        this.created = LocalDateTime.now();
-        this.modified = LocalDateTime.now();
-        this.lastLogin = LocalDateTime.now();
-    }
+    private String token;
 
     public UUID getId() {
         return id;
@@ -95,15 +78,28 @@ public class User {
         return lastLogin;
     }
 
-    public void setLastLogin(LocalDateTime last_login) {
-        this.lastLogin = last_login;
+    public void setLastLogin(LocalDateTime lastLogin) {
+        this.lastLogin = lastLogin;
     }
 
-    public Token getToken() {
+    public String getToken() {
         return token;
     }
 
-    public void setToken(Token token) {
+    public void setToken(String token) {
         this.token = token;
+    }
+
+    public UserDto from(User user ) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.phones = user.getPhones();
+        this.created = user.getCreated();
+        this.modified = user.getModified();
+        this.lastLogin = user.getLastLogin();
+        this.token = user.getToken().getValue();
+        return this;
     }
 }
